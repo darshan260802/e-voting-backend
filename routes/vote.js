@@ -14,7 +14,7 @@ router.post("/vote", async (req, res) => {
   if(isClosed) return res.status(451).send("Voting Lines Has Been Closed")
 
   //   Get voter details
-  const VoterData = await getDoc(doc(db, "User", voter))
+  const VoterData = await getDoc(doc(db, "Voter", voter))
     .then((result) => result.data())
     .catch((err) => console.log(err));
 
@@ -28,7 +28,7 @@ router.post("/vote", async (req, res) => {
     return res.status(403).send("Voter has already given their vote!");
 
   // deducting remaining vote from voter
-  await updateDoc(doc(db, "User", voter), "RemainingVotes", 0)
+  await updateDoc(doc(db, "Voter", voter), "RemainingVotes", 0)
     .then((result) => console.log(result))
     .catch((err) => console.log(err));
 

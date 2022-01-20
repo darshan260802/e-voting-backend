@@ -15,7 +15,7 @@ const db = require("../dbConnect");
 router.post("/signup", async (req, res) => {
   const { enrollment, password, name } = req.body;
   const findUser = query(
-    collection(db, "User"),
+    collection(db, "Voter"),
     where("UiD", "==", enrollment)
   );
 
@@ -30,7 +30,7 @@ router.post("/signup", async (req, res) => {
     }
 
     const securePassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
-    const userId = await addDoc(collection(db, "User"), {
+    const userId = await addDoc(collection(db, "Voter"), {
       UiD: enrollment,
       Name: name,
       Password: securePassword,
@@ -52,7 +52,7 @@ router.post("/login", async (req, res) => {
 
   try {
     const findUser = query(
-      collection(db, "User"),
+      collection(db, "Voter"),
       where("UiD", "==", enrollment)
     );
 
