@@ -79,7 +79,7 @@ router.post("/login", async (req, res) => {
 router.post("/candidateSignup", async (req, res) => {
   const { enrollment, password, name } = req.body;
   const url = 'https://worldtimeapi.org/api/timezone/asia/kolkata';
-  const isClosed = await axios.get(url).then(result => result.data.datetime.substr(0,4) === '2022' ? result.data.day_of_year >= 20 : true ).catch(err => console.log(err))
+  const isClosed = await axios.get(url).then(result => result.data.datetime.substr(0,4) === '2022' ? result.data.day_of_year > 20 : true ).catch(err => console.log(err))
   if(isClosed) return res.status(451).send("Candidate Registrations are closed!")
   const findUser = query(
     collection(db, "Candidate"),
