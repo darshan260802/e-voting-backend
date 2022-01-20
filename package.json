@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Dhruv Patel",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "all": "^0.0.0",
     "axios": "^0.25.0",
