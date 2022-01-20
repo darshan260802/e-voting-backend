@@ -5,7 +5,7 @@ const port = process.env.PORT || 4000;
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send("Hello Welcome To My Api!");
+    res.send("Hello Welcome To My Api! <h1>Copyright &copy; Darshan Patel</h1>");
 })
 app.use('/api', require('./routes/account'));
 app.use('/api', require('./routes/vote'));
