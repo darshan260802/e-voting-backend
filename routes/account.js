@@ -11,7 +11,7 @@ const router = express.Router();
 const axios = require('axios');
 const db = require("../dbConnect");
 
-// Gate 1:  POST  at '/signup' to create voter account
+// Gate 1:  POST Endpoint  at '/signup' to create voter account.
 router.post("/signup", async (req, res) => {
   const { enrollment, password, name } = req.body;
   const findUser = query(
@@ -45,7 +45,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// GATE 2: Post at /login to login for voters
+// GATE 2: Post Endpoint at /login to login for voters
 
 router.post("/login", async (req, res) => {
   const { enrollment, password } = req.body;
@@ -74,12 +74,12 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// GATE 3: POST at /candidateSignup to Register For Candidates
+// GATE 3: POST Endpoint at /candidateSignup to Register For Candidates
 
 router.post("/candidateSignup", async (req, res) => {
-  const { enrollment, password, name } = req.body;
+  const { enrollment, password, name, electionMoto } = req.body;
   const url = 'https://worldtimeapi.org/api/timezone/asia/kolkata';
-  const isClosed = await axios.get(url).then(result => result.data.datetime.substr(0,4) === '2022' ? result.data.day_of_year > 20 : true ).catch(err => console.log(err))
+  const isClosed = await axios.get(url).then(result => result.data.datetime.substr(0,4) === '2022' ? result.data.day_of_year > 21 : true ).catch(err => console.log(err))
   if(isClosed) return res.status(451).send("Candidate Registrations are closed!")
   const findUser = query(
     collection(db, "Candidate"),
@@ -101,6 +101,7 @@ router.post("/candidateSignup", async (req, res) => {
       UiD: enrollment,
       Name: name,
       Password: securePassword,
+      ElectionMoto: electionMoto,
       Votes: 0,
     })
       .then((response) => response.id)
@@ -112,7 +113,7 @@ router.post("/candidateSignup", async (req, res) => {
   }
 });
 
-//  GATE 4 : POST at /candidatelogin to login for candidate
+//  GATE 4 : POST Endpoint at /candidatelogin to login for candidate
 router.post("/candidatelogin", async (req, res) => {
   const { enrollment, password } = req.body;
 

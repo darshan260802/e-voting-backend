@@ -9,7 +9,7 @@ router.post("/vote", async (req, res) => {
   const { candidate, voter } = req.body;
 
   const url = 'https://worldtimeapi.org/api/timezone/asia/kolkata';
-  const isClosed = await axios.get(url).then(result => result.data.datetime.substr(0,10) !== '2022-01-20').catch(err => console.log(err))
+  const isClosed = await axios.get(url).then(result => result.data.datetime.substr(0,10) !== '2022-01-21').catch(err => console.log(err))
 
   if(isClosed) return res.status(451).send("Voting Lines Has Been Closed")
 
