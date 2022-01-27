@@ -9,6 +9,7 @@ app.get('/', (req, res) => {
 })
 app.use('/api', require('./routes/account'));
 app.use('/api', require('./routes/vote'));
+app.use('/api', require('./routes/results'));
 
 app.listen(port, async() => {
     console.log("App Is Listening on port ",port);
