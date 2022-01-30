@@ -8,7 +8,7 @@ const {
 } = require("firebase/firestore");
 const bcrypt = require("bcrypt");
 const router = express.Router();
-const axios = require('axios');
+const axios = require("axios");
 const db = require("../dbConnect");
 
 // Gate 1:  POST Endpoint  at '/signup' to create voter account.
@@ -39,7 +39,7 @@ router.post("/signup", async (req, res) => {
       .then((response) => response.id)
       .catch((err) => console.log(err));
 
-    res.status(200).send(userId);
+    res.status(200).send({ VoterID: userId, Name: name });
   } catch (errors) {
     console.log(errors);
   }
@@ -57,8 +57,19 @@ router.post("/login", async (req, res) => {
     );
 
     const voters = await getDocs(findUser)
-      .then((results) => results.docs.map((item) => item.data()))
+      .then((results) =>
+        results.docs.map((item) => {
+          const obj = {
+            id: item.id,
+            name: item.data().Name,
+            password: item.data().Password,
+          };
+          return obj;
+        })
+      )
       .catch((err) => console.log(err));
+
+    console.log(voters);
 
     if (voters.length === 0) {
       res.status(404).send("Voter Not Found!, Please Signup");
@@ -66,8 +77,8 @@ router.post("/login", async (req, res) => {
     }
 
     const voter = voters[0];
-    const passwordMatch = bcrypt.compareSync(password, voter.Password);
-    if (passwordMatch) res.send(voter);
+    const passwordMatch = bcrypt.compareSync(password, voter.password);
+    if (passwordMatch) res.send({ VoterID: voter.id, Name: voter.name });
     else res.status(403).send("Invalid Credintials!");
   } catch (error) {
     console.log(error);
@@ -78,10 +89,13 @@ router.post("/login", async (req, res) => {
 
 router.post("/candidateSignup", async (req, res) => {
   const { enrollment, password, name, electionMoto } = req.body;
-  const url = 'https://worldtimeapi.org/api/timezone/asia/kolkata';
 
-  const isClosed = await axios.get(url).then(result => result.data.datetime.substr(0,4) === '2022' ? result.data.day_of_year > 27 : true ).catch(err => console.log(err))
-  if(isClosed) return res.status(451).send("Candidate Registrations are closed!")
+  const date = new Date(2022, 00, 29, 23,59,59);
+
+  const isClosed = date.valueOf() - new Date().valueOf() < 0;
+
+  if (isClosed)
+    return res.status(451).send("Candidate Registrations are closed!");
   const findUser = query(
     collection(db, "Candidate"),
     where("UiD", "==", enrollment)
@@ -108,7 +122,7 @@ router.post("/candidateSignup", async (req, res) => {
       .then((response) => response.id)
       .catch((err) => console.log(err));
 
-    res.send(userId);
+    res.send({ CandidateID: userId, Name: name });
   } catch (errors) {
     console.log(errors);
   }
@@ -125,7 +139,15 @@ router.post("/candidatelogin", async (req, res) => {
     );
 
     const candidates = await getDocs(findUser)
-      .then((results) => results.docs.map((item) => item.data()))
+      .then((results) =>
+        results.docs.map((item) => {
+          return {
+            id: item.id,
+            password: item.data().Password,
+            name: item.data().Name,
+          };
+        })
+      )
       .catch((err) => console.log(err));
 
     if (candidates.length === 0) {
@@ -134,8 +156,9 @@ router.post("/candidatelogin", async (req, res) => {
     }
 
     const candidate = candidates[0];
-    const passwordMatch = bcrypt.compareSync(password, candidate.Password);
-    if (passwordMatch) res.send(candidate);
+    const passwordMatch = bcrypt.compareSync(password, candidate.password);
+    if (passwordMatch)
+      res.send({ CandidateID: candidate.id, Name: candidate.name });
     else res.status(403).send("Invalid Credintials!");
   } catch (error) {
     console.log(error);

@@ -8,10 +8,10 @@ const router = express.Router();
 router.post("/vote", async (req, res) => {
   const { candidate, voter } = req.body;
 
-  const date = '2022-01-27';
+  const Sdate = new Date(2022, 00, 30, 08,0,0);
+  const Edate = new Date(2022, 00, 30, 18,35,0);
 
-  const url = 'https://worldtimeapi.org/api/timezone/asia/kolkata';
-  const isClosed = await axios.get(url).then(result => result.data.datetime.substr(0,10) !== date).catch(err => console.log(err))
+  const isClosed = (Sdate.valueOf() - new Date().valueOf() > 0) || (Edate.valueOf() - new Date().valueOf() < 0) ;
 
   if(isClosed) return res.status(451).send("Voting Lines Has Been Closed")
 

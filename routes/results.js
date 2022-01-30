@@ -7,14 +7,10 @@ const router = express.Router();
 // Endpoint 1 : GET @ /api/results to check elections results
 
 router.get("/results", async (req, res) => {
-  const url = "https://worldtimeapi.org/api/timezone/asia/kolkata";
 
-  const date = "2022-01-27";
+  const date = new Date(2022, 00, 29, 23, 59,59);
 
-  const isClosed = await axios
-    .get(url)
-    .then((result) => result.data.datetime.substr(0, 10) !== date)
-    .catch((err) => console.log(err));
+  const isClosed = date.valueOf() - new Date().valueOf() < 0;
 
   if (isClosed) return res.status(451).send("Results will be declared on "+date+", and can be viewed only for the day");
 
