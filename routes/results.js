@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/results", async (req, res) => {
 
-  const date = new Date(2022, 00, 29, 23, 59,59);
+  const date = new Date(2022, 01, 29, 23, 59,59);
 
   const isClosed = date.valueOf() - new Date().valueOf() < 0;
 

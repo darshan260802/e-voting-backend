@@ -90,7 +90,7 @@ router.post("/login", async (req, res) => {
 router.post("/candidateSignup", async (req, res) => {
   const { enrollment, password, name, electionMoto } = req.body;
 
-  const date = new Date(2022, 00, 29, 23,59,59);
+  const date = new Date(2022, 01, 5, 23,59,59);
 
   const isClosed = date.valueOf() - new Date().valueOf() < 0;
 
