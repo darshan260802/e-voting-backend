@@ -92,8 +92,7 @@ router.post("/candidateSignup", async (req, res) => {
 
   const date = new Date(2022, 01, 5, 23,59,59);
   let today = new Date();
-  today = today.setHours(today.getHours + 5);
-  today = today.setMinutes(today.getMinutes + 5);
+  today = today.setHours(today.getHours + 5, today.getMinutes + 30);
 
   const isClosed = date.valueOf() - today.valueOf() < 0;
 
