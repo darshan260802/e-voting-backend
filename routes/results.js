@@ -15,7 +15,15 @@ router.get("/results", async (req, res) => {
   console.log((Sdate.valueOf() - new Date().valueOf() > 0));
   console.log((Edate.valueOf() - new Date().valueOf() < 0));
 
-  res.send(new Date());
+  res.send({
+    today: new Date(),
+    Sdate,
+    Edate,
+    "---",
+    values:new Date().valueOf(),
+    eV:Edate.valueOf(),
+    sV:Sdate.valueOf()
+  });
 
   if (isClosed) return res.status(451).send("Results will be declared on "+Sdate.toLocaleString()+", and can be viewed only for the day");
 
