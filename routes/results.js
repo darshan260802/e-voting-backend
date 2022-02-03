@@ -8,16 +8,11 @@ const router = express.Router();
 
 router.get("/results", async (req, res) => {
 
-  const Sdate = new Date(2022, 01, 3, 08,0,0);
-  const Edate = new Date(2022, 01, 3, 12,59,59);
-  let today = new Date();
-  today = today.setHours(today.getHours + 5, today.getMinutes + 30);
+  const Sdate = new Date(2022, 01, 2, 08,0,0);
+  const Edate = new Date(2022, 01, 3, 14,41,0);
 
-  res.send(today);
+  const isClosed = (Sdate.valueOf() - (new Date().valueOf()+19800000) > 0) || (Edate.valueOf() - (new Date().valueOf()+19800000) < 0) ;
 
-  const isClosed = (Sdate.valueOf() - today.valueOf() > 0) || (Edate.valueOf() - today.valueOf() < 0) ;
-  console.log((Sdate.valueOf() - today.valueOf() > 0));
-  console.log((Edate.valueOf() - today.valueOf() < 0));
 
   if (isClosed) return res.status(451).send("Results will be declared on "+Sdate.toLocaleString()+", and can be viewed only for the day");
 
