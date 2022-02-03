@@ -30,7 +30,7 @@ router.post("/vote", async (req, res) => {
     return res.status(403).send("Voter has already given their vote!");
 
   // deducting remaining vote from voter
-  await updateDoc(doc(db, "Voter", voter), "RemainingVotes", 0)
+  await updateDoc(doc(db, "Voter", voter), "RemainingVotes", (VoterData.RemainingVotes - 1))
     .then((result) => console.log(result))
     .catch((err) => console.log(err));
 
