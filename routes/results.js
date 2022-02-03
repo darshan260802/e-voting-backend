@@ -13,6 +13,8 @@ router.get("/results", async (req, res) => {
   let today = new Date();
   today = today.setHours(today.getHours + 5, today.getMinutes + 30);
 
+  res.send(today);
+
   const isClosed = (Sdate.valueOf() - today.valueOf() > 0) || (Edate.valueOf() - today.valueOf() < 0) ;
   console.log((Sdate.valueOf() - today.valueOf() > 0));
   console.log((Edate.valueOf() - today.valueOf() < 0));
