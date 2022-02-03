@@ -10,8 +10,11 @@ router.post("/vote", async (req, res) => {
 
   const Sdate = new Date(2022, 00, 30, 08,0,0);
   const Edate = new Date(2022, 01, 30, 18,35,0);
+  let today = new Date();
+  today = today.setHours(today.getHours + 5);
+  today = today.setMinutes(today.getMinutes + 5);
 
-  const isClosed = (Sdate.valueOf() - new Date().valueOf() > 0) || (Edate.valueOf() - new Date().valueOf() < 0) ;
+  const isClosed = (Sdate.valueOf() - today.valueOf() > 0) || (Edate.valueOf() - today.valueOf() < 0) ;
 
   if(isClosed) return res.status(451).send("Voting Lines Has Been Closed")
 

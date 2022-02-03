@@ -10,20 +10,13 @@ router.get("/results", async (req, res) => {
 
   const Sdate = new Date(2022, 01, 3, 08,0,0);
   const Edate = new Date(2022, 01, 3, 12,59,59);
+  let today = new Date();
+  today = today.setHours(today.getHours + 5);
+  today = today.setMinutes(today.getMinutes + 5);
 
-  const isClosed = (Sdate.valueOf() - new Date().valueOf() > 0) || (Edate.valueOf() - new Date().valueOf() < 0) ;
-  console.log((Sdate.valueOf() - new Date().valueOf() > 0));
-  console.log((Edate.valueOf() - new Date().valueOf() < 0));
-
-  res.send({
-    today: new Date(),
-    Sdate,
-    Edate,
-    "---":"--",
-    values:new Date().valueOf(),
-    eV:Edate.valueOf(),
-    sV:Sdate.valueOf()
-  });
+  const isClosed = (Sdate.valueOf() - today.valueOf() > 0) || (Edate.valueOf() - today.valueOf() < 0) ;
+  console.log((Sdate.valueOf() - today.valueOf() > 0));
+  console.log((Edate.valueOf() - today.valueOf() < 0));
 
   if (isClosed) return res.status(451).send("Results will be declared on "+Sdate.toLocaleString()+", and can be viewed only for the day");
 
