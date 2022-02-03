@@ -15,6 +15,7 @@ router.get("/results", async (req, res) => {
   console.log((Sdate.valueOf() - new Date().valueOf() > 0));
   console.log((Edate.valueOf() - new Date().valueOf() < 0));
 
+  res.send(new Date());
 
   if (isClosed) return res.status(451).send("Results will be declared on "+Sdate.toLocaleString()+", and can be viewed only for the day");
 
