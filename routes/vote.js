@@ -1,6 +1,6 @@
 const express = require("express");
 const { getDoc, doc, updateDoc } = require("firebase/firestore");
-const axios = require('axios');
+const axios = require("axios");
 const db = require("../dbConnect");
 const router = express.Router();
 
@@ -8,13 +8,14 @@ const router = express.Router();
 router.post("/vote", async (req, res) => {
   const { candidate, voter } = req.body;
 
-  const Sdate = new Date(2022, 00, 30, 08,0,0);
-  const Edate = new Date(2022, 01, 30, 18,35,0);
-  
+  const Sdate = new Date(2022, 00, 30, 08, 0, 0);
+  const Edate = new Date(2022, 03, 30, 18, 35, 0);
 
-  const isClosed = (Sdate.valueOf() - (new Date().valueOf()+19800000) > 0) || (Edate.valueOf() - (new Date().valueOf()+19800000) < 0) ;
+  const isClosed =
+    Sdate.valueOf() - (new Date().valueOf() + 19800000) > 0 ||
+    Edate.valueOf() - (new Date().valueOf() + 19800000) < 0;
 
-  if(isClosed) return res.status(451).send("Voting Lines Has Been Closed")
+  if (isClosed) return res.status(451).send("Voting Lines Has Been Closed");
 
   //   Get voter details
   const VoterData = await getDoc(doc(db, "Voter", voter))
@@ -31,7 +32,11 @@ router.post("/vote", async (req, res) => {
     return res.status(403).send("Voter has already given their vote!");
 
   // deducting remaining vote from voter
-  await updateDoc(doc(db, "Voter", voter), "RemainingVotes", (VoterData.RemainingVotes - 1))
+  await updateDoc(
+    doc(db, "Voter", voter),
+    "RemainingVotes",
+    VoterData.RemainingVotes - 1
+  )
     .then((result) => console.log(result))
     .catch((err) => console.log(err));
 
@@ -41,7 +46,9 @@ router.post("/vote", async (req, res) => {
     "Votes",
     CandidateData.Votes + 1
   )
-    .then(() => res.status(200).send("Your vote has been submitted successfully!"))
+    .then(() =>
+      res.status(200).send("Your vote has been submitted successfully!")
+    )
     .catch((err) => console.log(err));
 });
 

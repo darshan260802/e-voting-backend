@@ -7,16 +7,23 @@ const router = express.Router();
 // Endpoint 1 : GET @ /api/results to check elections results
 
 router.get("/results", async (req, res) => {
+  const Sdate = new Date(2022, 01, 10, 08, 0, 0);
+  const Edate = new Date(2022, 04, 10, 23, 59, 59);
 
-  const Sdate = new Date(2022, 01, 10, 08,0,0);
-  const Edate = new Date(2022, 01, 10, 23,59,59);
+  const isClosed =
+    Sdate.valueOf() - (new Date().valueOf() + 19800000) > 0 ||
+    Edate.valueOf() - (new Date().valueOf() + 19800000) < 0;
 
-  const isClosed = (Sdate.valueOf() - (new Date().valueOf()+19800000) > 0) || (Edate.valueOf() - (new Date().valueOf()+19800000) < 0) ;
+  if (isClosed)
+    return res
+      .status(451)
+      .send(
+        "Results will be declared on " +
+          Sdate.toLocaleString() +
+          ", and can be viewed only for the day"
+      );
 
-
-  if (isClosed) return res.status(451).send("Results will be declared on "+Sdate.toLocaleString()+", and can be viewed only for the day");
-
-  const q = query(collection(db, "Candidate"), orderBy("Votes", "desc"))
+  const q = query(collection(db, "Candidate"), orderBy("Votes", "desc"));
 
   await getDocs(q)
     .then((response) => res.json(response.docs.map((item) => item.data())))

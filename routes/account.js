@@ -90,9 +90,9 @@ router.post("/login", async (req, res) => {
 router.post("/candidateSignup", async (req, res) => {
   const { enrollment, password, name, electionMoto } = req.body;
 
-  const date = new Date(2022, 01, 5, 23,59,59);
+  const date = new Date(2022, 03, 5, 23, 59, 59);
 
-  const isClosed = date.valueOf() - (new Date().valueOf()+19800000) < 0;
+  const isClosed = date.valueOf() - (new Date().valueOf() + 19800000) < 0;
 
   if (isClosed)
     return res.status(451).send("Candidate Registrations are closed!");
