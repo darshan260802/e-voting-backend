@@ -94,8 +94,8 @@ router.post("/candidateSignup", async (req, res) => {
 
   const isClosed = date.valueOf() - (new Date().valueOf() + 19800000) < 0;
 
-  if (isClosed)
-    return res.status(451).send("Candidate Registrations are closed!");
+  // if (isClosed)
+  //   return res.status(451).send("Candidate Registrations are closed!");
   const findUser = query(
     collection(db, "Candidate"),
     where("UiD", "==", enrollment)

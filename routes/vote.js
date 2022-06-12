@@ -15,7 +15,7 @@ router.post("/vote", async (req, res) => {
     Sdate.valueOf() - (new Date().valueOf() + 19800000) > 0 ||
     Edate.valueOf() - (new Date().valueOf() + 19800000) < 0;
 
-  if (isClosed) return res.status(451).send("Voting Lines Has Been Closed");
+  // if (isClosed) return res.status(451).send("Voting Lines Has Been Closed");
 
   //   Get voter details
   const VoterData = await getDoc(doc(db, "Voter", voter))

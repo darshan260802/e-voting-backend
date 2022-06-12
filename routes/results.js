@@ -14,14 +14,14 @@ router.get("/results", async (req, res) => {
     Sdate.valueOf() - (new Date().valueOf() + 19800000) > 0 ||
     Edate.valueOf() - (new Date().valueOf() + 19800000) < 0;
 
-  if (isClosed)
-    return res
-      .status(451)
-      .send(
-        "Results will be declared on " +
-          Sdate.toLocaleString() +
-          ", and can be viewed only for the day"
-      );
+  // if (isClosed)
+  //   return res
+  //     .status(451)
+  //     .send(
+  //       "Results will be declared on " +
+  //         Sdate.toLocaleString() +
+  //         ", and can be viewed only for the day"
+  //     );
 
   const q = query(collection(db, "Candidate"), orderBy("Votes", "desc"));
 
