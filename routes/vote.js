@@ -9,7 +9,7 @@ router.post("/vote", async (req, res) => {
   const { candidate, voter } = req.body;
 
   const Sdate = new Date(2022, 00, 30, 08, 0, 0);
-  const Edate = new Date(2022, 03, 30, 18, 35, 0);
+  const Edate = new Date(2022, 11, 30, 18, 35, 0);
 
   const isClosed =
     Sdate.valueOf() - (new Date().valueOf() + 19800000) > 0 ||

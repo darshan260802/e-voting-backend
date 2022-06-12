@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/results", async (req, res) => {
   const Sdate = new Date(2022, 01, 10, 08, 0, 0);
-  const Edate = new Date(2022, 04, 10, 23, 59, 59);
+  const Edate = new Date(2022, 11, 10, 23, 59, 59);
 
   const isClosed =
     Sdate.valueOf() - (new Date().valueOf() + 19800000) > 0 ||
